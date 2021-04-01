@@ -1,2 +1,2 @@
-import {getEmpData, getEmpDataSuccess, getEmpDataError} from './employeeActions'
-export {getEmpData, getEmpDataSuccess, getEmpDataError} 
+import {getEmpData, getEmpDataSuccess, getEmpDataError, getEmpDataId} from './employeeActions'
+export {getEmpData, getEmpDataSuccess, getEmpDataError, getEmpDataId} 

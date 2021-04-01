@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import * as Actions from '../../store/actions'
 import { Grid,Button, Container, Table, Pagination } from 'semantic-ui-react'
+import {Link} from 'react-router-dom';
 import './style.css'
 class List extends Component {
     constructor(props){
@@ -10,18 +11,17 @@ class List extends Component {
             men: true,
             menData: [],
             womenData: [],
-            totalData: this.props.empReducer.total / 10,
+            totalData: this.props.empReducer.data.total / 10,
             activePage: 1
         }
     }
     componentDidMount(){
-        console.log('env test', process.env);
-       //this.props.getEmp(1,10,10)
+        this.props.getEmp(1,10,100)
     }
     render(){
         let menData = []
         let womenData = []
-        let apiRes = this.props.empReducer.data
+        let apiRes = this.props.empReducer.data.data
         let length = apiRes.length
         for(let i = 0; i< length; i++){
             if(apiRes[i].title==='mr'){
@@ -38,7 +38,7 @@ class List extends Component {
             <>
             <h1 className="text-center"> Employee Listing </h1>
             <Container>
-                <Grid columns={2} divided>
+                <Grid columns={2}>
                     <Grid.Row>
                         <Grid.Column>
                             <Button 
@@ -68,18 +68,22 @@ class List extends Component {
                                     {men ? 
                                         menData&& menData.map((value,index) => {
                                             return (
-                                                <Table.Row key={index}>
+                                                <Table.Row key={'m'+index}>
                                                     <Table.Cell>
-                                                        {value.firstName + value.lastName}
+                                                        {value.firstName +' '+ value.lastName}
                                                     </Table.Cell>
                                                     <Table.Cell>
                                                         {value.email}
                                                     </Table.Cell>
                                                     <Table.Cell>
-                                                        Profile Link
+                                                        <Link to={{ 
+                                                            pathname: '/profile',
+                                                            id: value.id,
+                                                            imgsrc: value.picture
+                                                        }}>Profile Link</Link>
                                                     </Table.Cell>
                                                     <Table.Cell>
-                                                        Blog Link
+                                                        <Link to="/blog">Blog Link</Link>
                                                     </Table.Cell>
                                                 </Table.Row>
                                             )
@@ -87,7 +91,7 @@ class List extends Component {
                                     : 
                                         womenData && womenData.map((value, index) => {
                                             return(
-                                                <Table.Row key={index}>
+                                                <Table.Row key={'w'+index}>
                                                     <Table.Cell>
                                                         {value.firstName + value.lastName}
                                                     </Table.Cell>
@@ -95,10 +99,10 @@ class List extends Component {
                                                         {value.email}
                                                     </Table.Cell>
                                                     <Table.Cell>
-                                                        Profile Link
+                                                        <Link to="/profile">Profile Link</Link>
                                                     </Table.Cell>
                                                     <Table.Cell>
-                                                        Blog Link
+                                                        <Link to="/blog">Blog Link</Link>
                                                     </Table.Cell>
                                                 </Table.Row>
                                             )
@@ -131,7 +135,6 @@ const mapState = (props) =>{
     return props
 }
 const mapDispatch = (dispatch) =>{
-    console.log('dispatch');
     return {
         getEmp:(filter, offset, limit)=>dispatch(Actions.getEmpData(filter, offset, limit))
     }
