@@ -16,13 +16,13 @@ class List extends Component {
         }
     }
     componentDidMount(){
-        this.props.getEmp(1,10,100)
+        this.props.getEmp(1,10,10)
     }
     render(){
         let menData = []
         let womenData = []
         let apiRes = this.props.empReducer.data.data
-        let length = apiRes.length
+        let length = apiRes&& apiRes.length
         for(let i = 0; i< length; i++){
             if(apiRes[i].title==='mr'){
                 menData.push(apiRes[i])
