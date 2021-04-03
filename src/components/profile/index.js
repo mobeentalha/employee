@@ -1,51 +1,57 @@
 import React, {Component} from 'react';
-import { Grid, Container,Segment, Image } from 'semantic-ui-react'
+import {Grid, Container, Segment, Image, Button} from 'semantic-ui-react'
 import * as Actions from '../../store/actions'
+import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import './style.css'
+
 class Profile extends Component {
-    constructor(props){
-        super()
-        
-    }
-    componentDidMount(){
-        this.props.getEmpId(this.props.location.id)
-    }
-    render(){
-        console.log('reducer profile', this.props.empReducer.data);
-        return(
-            <>
-            <h1 className="text-center"> Profile Page</h1> 
-            <Container>
-                <Grid columns={2}>
-                    <Grid.Row>
-                        <Grid.Column>
-                            <Segment>
-                                <Image className="profileImg" src={this.props.location.imgsrc} />
-                            </Segment>
-                        </Grid.Column>
-                        <Grid.Column>
-                            <Segment>
-                                <p> Name </p>
-                                <p> Date of Birth </p>
-                                <p> Email </p>
-                                <p> Registration Date </p>
-                                <p> Phone </p>
-                            </Segment>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-            </Container>
-            </>
-        )
-    }
+		componentDidMount() {
+				let id = this.props.match?.params?.id
+				this.props.getEmpId(id)
+		}
+
+		render() {
+				let {empReducer} = this.props;
+				const empData = empReducer.empData
+				return (
+						<>
+						<Button>
+							<Link to="/"> Back </Link>
+						</Button>
+								<h1 className="text-center"> Profile Page</h1>
+
+								{!empReducer.loading ? <Container>
+										<Grid columns={2}>
+												<Grid.Row>
+														<Grid.Column>
+																<Segment>
+																		<Image className="profileImg" src={empData?.picture}/>
+																</Segment>
+														</Grid.Column>
+														<Grid.Column>
+																<Segment>
+																		<h2> Name: {empData?.firstName} {empData?.lastName} </h2>
+																		<h2> Date of Birth: {empData?.dateOfBirth}</h2>
+																		<h2> Email: {empData?.email}</h2>
+																		<h2> Registration Date: {empData?.registerDate} </h2>
+																		<h2> Phone: {empData?.phone}</h2>
+																</Segment>
+														</Grid.Column>
+												</Grid.Row>
+										</Grid>
+								</Container> : <h2>loading</h2>}
+						</>
+				)
+		}
 }
-const mapState = (props) =>{
-    return props
+
+const mapStateToProps = ({empReducer}) => {
+		return {empReducer}
 }
-const mapDispatch = (dispatch) =>{
-    return {
-        getEmpId:(id)=>dispatch(Actions.getEmpDataId(id))
-    }
+const mapDispatchToProps = (dispatch) => {
+		return {
+				getEmpId: (id) => dispatch(Actions.getEmpDataId(id))
+		}
 }
-export default connect(mapState,mapDispatch)(Profile)
+export default connect(mapStateToProps, mapDispatchToProps)(Profile)

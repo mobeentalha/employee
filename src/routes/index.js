@@ -8,7 +8,7 @@ const Routes = () => {
     return (
         <Switch>
             <Route path={`/`} component={List} exact  />
-            <Route path={`/profile`} component={Profile} />
+            <Route path={`/profile/:id`} component={Profile} />
             <Route path={`/blog`} component={Blog} />
             <Route path={`/error`} component={Error} />
             <Redirect to="/error" />

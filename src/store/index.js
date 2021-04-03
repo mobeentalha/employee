@@ -24,7 +24,7 @@ import createSagaMiddleWare from 'redux-saga';
 import {rootSaga} from './sagas'
 
 
-const LOCAL_STORAGE_NAME = 'Hello'
+const LOCAL_STORAGE_NAME = 'my_local_storage'
 export const sagaMiddleWare = createSagaMiddleWare()
 
 class PersistedStore {
@@ -68,11 +68,9 @@ class PersistedStore {
     static loadState() {
         try {
             let serializedState = localStorage.getItem(LOCAL_STORAGE_NAME);
-
             if (serializedState === null) {
                 return PersistedStore.initialState();
             }
-
             return JSON.parse(serializedState);
         } catch (err) {
             return PersistedStore.initialState();
@@ -83,7 +81,6 @@ class PersistedStore {
     // changes in the Redux Store (This happens because of the subscribe()
     // in the initStore-method). No need to access this method from the outside
     static saveState(state) {
-
         try {
             let serializedState = JSON.stringify(state);
             localStorage.setItem(LOCAL_STORAGE_NAME, serializedState);
